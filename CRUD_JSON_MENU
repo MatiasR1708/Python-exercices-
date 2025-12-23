@@ -1,0 +1,87 @@
+import json
+import os
+
+ARCHIVO = "datos.json"
+
+# =========================
+# FUNCIONES DE ARCHIVO
+# =========================
+
+def cargar_datos():
+    if not os.path.exists(ARCHIVO):
+        return []
+    with open(ARCHIVO, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def guardar_datos(datos):
+    with open(ARCHIVO, "w", encoding="utf-8") as f:
+        json.dump(datos, f, indent=4, ensure_ascii=False)
+
+# =========================
+# FUNCIONES DEL MENÚ
+# =========================
+
+def agregar_registro(datos):
+    nombre = input("Nombre: ")
+    categoria = input("Categoría: ")
+    valor = input("Valor: ")
+
+    registro = {
+        "nombre": nombre,
+        "categoria": categoria,
+        "valor": valor
+    }
+
+    datos.append(registro)
+    guardar_datos(datos)
+    print("Registro agregado correctamente")
+
+def mostrar_registros(datos):
+    if not datos:
+        print("No hay registros")
+        return
+
+    for i, registro in enumerate(datos, start=1):
+        print(f"\nRegistro {i}")
+        for clave, valor in registro.items():
+            print(f"{clave}: {valor}")
+
+def eliminar_registro(datos):
+    mostrar_registros(datos)
+    try:
+        indice = int(input("\nNúmero de registro a eliminar: ")) - 1
+        eliminado = datos.pop(indice)
+        guardar_datos(datos)
+        print(f"Registro eliminado: {eliminado['nombre']}")
+    except:
+        print("Opción inválida")
+
+# =========================
+# MENÚ PRINCIPAL
+# =========================
+
+def menu():
+    datos = cargar_datos()
+
+    while True:
+        print("\n--- MENÚ GENERAL ---")
+        print("1. Agregar registro")
+        print("2. Mostrar registros")
+        print("3. Eliminar registro")
+        print("4. Salir")
+
+        opcion = input("Elige una opción: ")
+
+        if opcion == "1":
+            agregar_registro(datos)
+        elif opcion == "2":
+            mostrar_registros(datos)
+        elif opcion == "3":
+            eliminar_registro(datos)
+        elif opcion == "4":
+            print("Saliendo del programa")
+            break
+        else:
+            print("Opción no válida")
+
+menu()
