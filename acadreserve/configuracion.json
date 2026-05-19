@@ -1,7 +1,0 @@
-{
-  "limites_por_tipo": {
-    "ESTUDIANTE": 2,
-    "DOCENTE": 4,
-    "ADMINISTRATIVO": 6
-  }
-}
